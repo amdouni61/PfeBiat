@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <div class="auth-header">
+      <mat-icon class="auth-icon">task_alt</mat-icon>
+      <h1 class="auth-title">Welcome to TaskFlow</h1>
+      <p class="auth-subtitle">Sign in to your account</p>
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Enter your email" />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Enter your password" />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="error-text" *ngIf="error()">
+        <mat-icon>error</mat-icon>
+        {{ error() }}
+      </div>
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        class="full-width login-btn"
+        [disabled]="loginForm.invalid || loading()">
+        <mat-spinner diameter="20" *ngIf="loading()"></mat-spinner>
+        <mat-icon *ngIf="!loading()">login</mat-icon>
+        {{ loading() ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p class="demo-info">
+        <mat-icon>info</mat-icon>
+        Demo Admin: abdennour.amdouni@gmail.com / admin123
+      </p>
+    </div>
+  </mat-card>
+</div>

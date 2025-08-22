@@ -1,0 +1,81 @@
+<div class="page-container">
+  <div class="content-wrapper">
+    <div class="list-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="list-title">Comments</h1>
+          <p class="list-subtitle">View and manage comments</p>
+        </div>
+        <div class="header-right">
+          <button mat-raised-button color="primary" (click)="createNewComment()">
+            <mat-icon>add</mat-icon>
+            New Comment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-content">
+      <div class="loading-container" *ngIf="loading()">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading comments...</p>
+      </div>
+
+      <div class="error-container" *ngIf="error()">
+        <mat-icon>error</mat-icon>
+        <p>{{ error() }}</p>
+        <button mat-raised-button color="primary" (click)="loadComments()">
+          <mat-icon>refresh</mat-icon>
+          Try Again
+        </button>
+      </div>
+
+      <div *ngIf="!loading() && !error()">
+        <div class="empty-container" *ngIf="comments().length === 0">
+          <mat-icon>comment</mat-icon>
+          <p>No comments found</p>
+          <button mat-raised-button color="primary" (click)="createNewComment()">
+            Create Your First Comment
+          </button>
+        </div>
+
+        <div class="comments-list" *ngIf="comments().length > 0">
+          <div class="comment-card" *ngFor="let comment of comments()">
+            <div class="comment-header">
+              <div class="comment-user">
+                <mat-icon>person</mat-icon>
+                <span>{{ comment.userFullName || 'Unknown User' }}</span>
+              </div>
+              <div class="comment-actions">
+                <button mat-icon-button (click)="viewComment(comment.id)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button (click)="editComment(comment.id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteComment(comment.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="comment-content">
+              <p class="comment-text">{{ comment.content }}</p>
+              
+              <div class="comment-meta">
+                <div class="comment-task" *ngIf="comment.taskTitle">
+                  <mat-icon>assignment</mat-icon>
+                  <span>{{ comment.taskTitle }}</span>
+                </div>
+                <div class="comment-date">
+                  <mat-icon>schedule</mat-icon>
+                  <span>{{ comment.createdAt | date:'short' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

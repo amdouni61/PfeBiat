@@ -1,0 +1,120 @@
+<div class="page-container">
+  <div class="content-wrapper">
+    <div class="form-header">
+      <h1 class="form-title">{{ isEditMode() ? 'Edit Task' : 'Create New Task' }}</h1>
+    </div>
+
+    <div class="form-content">
+      <div class="loading-container" *ngIf="loading() && isEditMode()">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading task details...</p>
+      </div>
+
+      <div class="form-card" *ngIf="!loading() || !isEditMode()">
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+          <div class="form-section">
+            <h3 class="section-title">Task Information</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" placeholder="Enter task title" />
+              <mat-error *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+                Title is required and must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" placeholder="Enter task description" rows="4"></textarea>
+              <mat-error *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched">
+                Description is required and cannot exceed 2000 characters
+              </mat-error>
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option *ngFor="let type of taskTypes" [value]="type">{{ type }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="taskForm.get('type')?.invalid && taskForm.get('type')?.touched">
+                  Task type is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Priority</mat-label>
+                <mat-select formControlName="priority">
+                  <mat-option *ngFor="let priority of taskPriorities" [value]="priority">{{ priority }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched">
+                  Priority is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-title">Schedule</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="datePicker" formControlName="date" placeholder="Choose a date" />
+              <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+              <mat-error *ngIf="taskForm.get('date')?.invalid && taskForm.get('date')?.touched">
+                Date is required
+              </mat-error>
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Start Time</mat-label>
+                <input matInput type="time" formControlName="startTime" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>End Time</mat-label>
+                <input matInput type="time" formControlName="endTime" />
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Deadline</mat-label>
+              <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" placeholder="Choose deadline (optional)" />
+              <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+              <mat-datepicker #deadlinePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-title">Additional Information</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Attachment URL</mat-label>
+              <input matInput formControlName="attachmentUrl" placeholder="Enter attachment URL (optional)" />
+            </mat-form-field>
+          </div>
+
+          <div class="error-message" *ngIf="error()">
+            <mat-icon>error</mat-icon>
+            <span>{{ error() }}</span>
+          </div>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="onCancel()">
+              <mat-icon>cancel</mat-icon>
+              Cancel
+            </button>
+            
+            <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid || loading()">
+              <mat-spinner diameter="20" *ngIf="loading()"></mat-spinner>
+              <mat-icon *ngIf="!loading()">{{ isEditMode() ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode() ? 'Update Task' : 'Create Task' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

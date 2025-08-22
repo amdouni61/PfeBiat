@@ -1,0 +1,11 @@
+<mat-card class="comment-form-card">
+  <h2 mat-card-title>{{ isEdit ? 'Edit Comment' : 'Create Comment' }}</h2>
+  <form (ngSubmit)="saveComment()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Content</mat-label>
+      <textarea matInput [(ngModel)]="comment.content" name="content" required></textarea>
+    </mat-form-field>
+    <div *ngIf="error" style="color:red;">{{ error }}</div>
+    <button mat-raised-button color="primary" type="submit">{{ isEdit ? 'Update' : 'Create' }} Comment</button>
+  </form>
+</mat-card> 

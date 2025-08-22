@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="content-wrapper">
+    <div class="list-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="list-title">My Tasks</h1>
+          <p class="list-subtitle">Manage and track your tasks</p>
+        </div>
+        <div class="header-right">
+          <button mat-raised-button color="primary" (click)="createNewTask()">
+            <mat-icon>add</mat-icon>
+            New Task
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-content">
+      <div class="loading-container" *ngIf="loading()">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading tasks...</p>
+      </div>
+
+      <div class="error-container" *ngIf="error()">
+        <mat-icon>error</mat-icon>
+        <p>{{ error() }}</p>
+        <button mat-raised-button color="primary" (click)="loadTasks()">
+          <mat-icon>refresh</mat-icon>
+          Try Again
+        </button>
+      </div>
+
+      <div *ngIf="!loading() && !error()">
+        <div class="list-controls">
+          <mat-form-field appearance="outline">
+            <mat-label>Filter by Status</mat-label>
+            <mat-select [value]="selectedStatus()" (selectionChange)="onStatusChange($event.value)">
+              <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="empty-container" *ngIf="filteredTasks().length === 0">
+          <mat-icon>assignment</mat-icon>
+          <p>No tasks found</p>
+          <button mat-raised-button color="primary" (click)="createNewTask()">
+            Create Your First Task
+          </button>
+        </div>
+
+        <div class="tasks-grid" *ngIf="filteredTasks().length > 0">
+          <div class="task-card" *ngFor="let task of filteredTasks()">
+            <div class="task-header">
+              <div class="task-title">{{ task.title }}</div>
+              <div class="task-actions">
+                <button mat-icon-button (click)="viewTask(task.id)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button (click)="editTask(task.id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteTask(task.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="task-content">
+              <p class="task-description">{{ task.description }}</p>
+              
+              <div class="task-meta">
+                <span class="status-badge">{{ task.status }}</span>
+                <span class="priority-badge">{{ task.priority }}</span>
+                <span class="type-badge">{{ task.type }}</span>
+              </div>
+
+              <div class="task-info">
+                <div class="task-date">
+                  <mat-icon>event</mat-icon>
+                  <span>{{ task.date | date:'shortDate' }}</span>
+                </div>
+                <div class="task-user">
+                  <mat-icon>person</mat-icon>
+                  <span>{{ task.userFullName }}</span>
+                </div>
+              </div>
+
+              <div class="task-deadline" *ngIf="task.deadline">
+                <mat-icon>schedule</mat-icon>
+                <span>Deadline: {{ task.deadline | date:'shortDate' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

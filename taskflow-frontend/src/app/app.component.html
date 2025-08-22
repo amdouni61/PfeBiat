@@ -1,0 +1,7 @@
+<app-navbar *ngIf="showSidebar()">
+  <router-outlet></router-outlet>
+</app-navbar>
+
+<div *ngIf="!showSidebar()" class="auth-container">
+  <router-outlet></router-outlet>
+</div>

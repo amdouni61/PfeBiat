@@ -1,0 +1,40 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <div class="logo">
+      <img src="/assets/logotaskflow.png" alt="TaskFlow Logo" />
+      <span>TaskFlow</span>
+    </div>
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" (click)="drawer.toggle()"><mat-icon>dashboard</mat-icon> Dashboard</a>
+      <a mat-list-item routerLink="/tasks" (click)="drawer.toggle()"><mat-icon>assignment</mat-icon> Tasks</a>
+      <a mat-list-item routerLink="/teams" (click)="drawer.toggle()"><mat-icon>group</mat-icon> Teams</a>
+      <a mat-list-item routerLink="/comments" (click)="drawer.toggle()"><mat-icon>comment</mat-icon> Comments</a>
+      <a *ngIf="isAuthenticated()" mat-list-item routerLink="/profile" (click)="drawer.toggle()"><mat-icon>person</mat-icon> Profile</a>
+      <a *ngIf="isAuthenticated()" mat-list-item routerLink="/settings" (click)="drawer.toggle()"><mat-icon>settings</mat-icon> Settings</a>
+      <a *ngIf="!isAuthenticated()" mat-list-item routerLink="/login" (click)="drawer.toggle()"><mat-icon>login</mat-icon> Login</a>
+      <a *ngIf="!isAuthenticated()" mat-list-item routerLink="/register" (click)="drawer.toggle()"><mat-icon>person_add</mat-icon> Register</a>
+      <a *ngIf="isAuthenticated()" mat-list-item (click)="logout(); drawer.toggle()" style="cursor:pointer;"><mat-icon>logout</mat-icon> Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <div class="logo">
+        <img src="/assets/logotaskflow.png" alt="TaskFlow Logo" />
+        <span>TaskFlow</span>
+      </div>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

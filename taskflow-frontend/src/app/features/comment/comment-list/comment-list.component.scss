@@ -1,0 +1,209 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .content-wrapper {
+    .list-header {
+      margin-bottom: 24px;
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+
+        .header-left {
+          .list-title {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+          }
+
+          .list-subtitle {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 16px;
+          }
+        }
+
+        .header-right {
+          display: flex;
+          gap: 12px;
+        }
+      }
+    }
+
+    .list-content {
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 40px;
+        color: var(--text-secondary);
+      }
+
+      .error-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 40px;
+        color: var(--error-color);
+
+        mat-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+        }
+
+        p {
+          margin: 0;
+          font-size: 16px;
+        }
+      }
+
+      .empty-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 40px;
+        color: var(--text-secondary);
+
+        mat-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+        }
+
+        p {
+          margin: 0;
+          font-size: 16px;
+        }
+      }
+
+      .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .comment-card {
+          background: var(--surface-color);
+          border-radius: 12px;
+          padding: 20px;
+          border: 1px solid var(--outline-variant);
+          transition: all 0.2s ease;
+
+          &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+          }
+
+          .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .comment-user {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              color: var(--text-primary);
+              font-weight: 500;
+
+              mat-icon {
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+                color: var(--primary-color);
+              }
+            }
+
+            .comment-actions {
+              display: flex;
+              gap: 4px;
+            }
+          }
+
+          .comment-content {
+            .comment-text {
+              margin: 0 0 12px 0;
+              color: var(--text-primary);
+              line-height: 1.5;
+              font-size: 14px;
+            }
+
+            .comment-meta {
+              display: flex;
+              gap: 16px;
+              flex-wrap: wrap;
+
+              .comment-task,
+              .comment-date {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                color: var(--text-secondary);
+                font-size: 12px;
+
+                mat-icon {
+                  font-size: 16px;
+                  width: 16px;
+                  height: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px;
+
+    .content-wrapper {
+      .list-header {
+        .header-content {
+          flex-direction: column;
+          align-items: stretch;
+
+          .header-right {
+            justify-content: center;
+          }
+        }
+      }
+
+      .list-content {
+        .comments-list {
+          .comment-card {
+            .comment-header {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 12px;
+
+              .comment-actions {
+                align-self: flex-end;
+              }
+            }
+
+            .comment-content {
+              .comment-meta {
+                flex-direction: column;
+                gap: 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

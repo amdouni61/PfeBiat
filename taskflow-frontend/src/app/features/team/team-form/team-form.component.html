@@ -1,0 +1,19 @@
+<div class="logo" style="justify-content: center; margin-bottom: 24px;">
+  <img src="/assets/logotaskflow.png" alt="TaskFlow Logo" />
+</div>
+<mat-card class="team-form-card" style="max-width: 400px; margin: 0 auto; box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);">
+  <mat-card-title style="text-align: center; margin-bottom: 16px;">{{ isEdit ? 'Edit Team' : 'Create Team' }}</mat-card-title>
+  <form (ngSubmit)="saveTeam()" #teamForm="ngForm" style="display: flex; flex-direction: column; gap: 18px;">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Name</mat-label>
+      <mat-icon matPrefix>group</mat-icon>
+      <input matInput type="text" [(ngModel)]="team.name" name="name" required />
+      <mat-error *ngIf="teamForm.submitted && !team.name">Name is required</mat-error>
+    </mat-form-field>
+    <div *ngIf="error" class="error-text" style="color: #e53935; text-align: center;">{{ error }}</div>
+    <button mat-raised-button color="primary" type="submit" class="full-width" style="margin-top: 8px;">
+      <mat-icon>{{ isEdit ? 'edit' : 'add' }}</mat-icon>
+      {{ isEdit ? 'Update' : 'Create' }} Team
+    </button>
+  </form>
+</mat-card>
