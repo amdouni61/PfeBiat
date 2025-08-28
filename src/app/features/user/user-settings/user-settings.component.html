@@ -1,0 +1,60 @@
+<div class="page-container">
+  <div class="content-wrapper">
+    <div class="settings-header">
+      <h1 class="settings-title">User Settings</h1>
+    </div>
+
+    <div class="settings-content">
+      <div class="settings-card" *ngIf="user()">
+        <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+          <div class="form-section">
+            <h3 class="section-title">Personal Information</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullName" placeholder="Enter your full name" />
+              <mat-error *ngIf="settingsForm.get('fullName')?.invalid && settingsForm.get('fullName')?.touched">
+                Full name is required and must be at least 2 characters
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" placeholder="Enter your username" />
+              <mat-error *ngIf="settingsForm.get('username')?.invalid && settingsForm.get('username')?.touched">
+                Username is required and must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="Enter your email" readonly />
+              <mat-hint>Email cannot be changed</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="goBack()">
+              <mat-icon>arrow_back</mat-icon>
+              Back to Profile
+            </button>
+            
+            <button mat-raised-button color="primary" type="submit" [disabled]="settingsForm.invalid || loading()">
+              <mat-spinner diameter="20" *ngIf="loading()"></mat-spinner>
+              <mat-icon *ngIf="!loading()">save</mat-icon>
+              Save Settings
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="empty-container" *ngIf="!user()">
+        <mat-icon>person</mat-icon>
+        <p>User not found</p>
+        <button mat-raised-button color="primary" routerLink="/login">
+          Login
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

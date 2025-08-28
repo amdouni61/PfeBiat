@@ -1,0 +1,58 @@
+<div class="edit-user-dialog">
+  <h2 mat-dialog-title>Edit User</h2>
+  
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" placeholder="Enter username">
+          <mat-error *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched">
+            Username is required and must be at least 3 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter email" type="email">
+          <mat-error *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched">
+            Valid email is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="fullName" placeholder="Enter full name">
+          <mat-error *ngIf="editForm.get('fullName')?.invalid && editForm.get('fullName')?.touched">
+            Full name is required and must be at least 2 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of userRoles" [value]="role">
+              {{ role }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="editForm.get('role')?.invalid && editForm.get('role')?.touched">
+            Role is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="editForm.invalid">
+        Update User
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

@@ -1,0 +1,195 @@
+<div class="user-management-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>people</mat-icon>
+        User Management
+      </mat-card-title>
+      <mat-card-subtitle>Manage users and their profiles</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="showCreateForm.set(!showCreateForm())">
+        <mat-icon>person_add</mat-icon>
+        Create New User
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Create User Form -->
+  <mat-card *ngIf="showCreateForm()" class="form-card">
+    <mat-card-header>
+      <mat-card-title>Create New User</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="createUserForm" (ngSubmit)="createUser()">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" placeholder="Enter username">
+            <mat-error *ngIf="createUserForm.get('username')?.invalid && createUserForm.get('username')?.touched">
+              Username is required and must be at least 3 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Enter email" type="email">
+            <mat-error *ngIf="createUserForm.get('email')?.invalid && createUserForm.get('email')?.touched">
+              Valid email is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="fullName" placeholder="Enter full name">
+            <mat-error *ngIf="createUserForm.get('fullName')?.invalid && createUserForm.get('fullName')?.touched">
+              Full name is required and must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" placeholder="Enter password" type="password">
+            <mat-error *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched">
+              Password is required and must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option *ngFor="let role of userRoles" [value]="role">
+                {{ role }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="createUserForm.get('role')?.invalid && createUserForm.get('role')?.touched">
+              Role is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <label class="file-input-label">Profile Photo</label>
+          <div class="file-input-container">
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" class="file-input">
+            <span class="file-input-text">{{ selectedFile() ? selectedFile()?.name : 'No file chosen' }}</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="showCreateForm.set(false)">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="createUserForm.invalid || loading()">
+            <mat-spinner diameter="20" *ngIf="loading()"></mat-spinner>
+            Create User
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Users Table -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="loading-container" *ngIf="loading()">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading users...</p>
+      </div>
+
+      <div class="error-container" *ngIf="error()">
+        <mat-icon>error</mat-icon>
+        <p>{{ error() }}</p>
+        <button mat-raised-button color="primary" (click)="loadUsers()">
+          <mat-icon>refresh</mat-icon>
+          Try Again
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="users()" class="users-table" *ngIf="!loading() && !error()">
+        <!-- Avatar Column -->
+        <ng-container matColumnDef="avatar">
+          <th mat-header-cell *matHeaderCellDef>Photo</th>
+          <td mat-cell *matCellDef="let user">
+            <img 
+              [src]="user.avatarUrl || '/assets/default-avatar.svg'" 
+              [alt]="user.fullName"
+              class="user-avatar"
+              (error)="onImageError($event)"
+              (load)="onImageLoad($event)">
+          </td>
+        </ng-container>
+
+        <!-- Username Column -->
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Username</th>
+          <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <!-- Full Name Column -->
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef>Full Name</th>
+          <td mat-cell *matCellDef="let user">{{ user.fullName }}</td>
+        </ng-container>
+
+        <!-- Role Column -->
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Role</th>
+          <td mat-cell *matCellDef="let user">
+            <mat-chip [color]="getRoleColor(user.role)" selected>
+              {{ user.role }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button color="primary" (click)="viewUser(user.id)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button *ngIf="isAdmin" mat-icon-button color="accent" (click)="editUser(user.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteUser(user.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <input 
+              type="file" 
+              accept="image/*" 
+              (change)="updateUserPhoto(user.id, $event)"
+              style="display: none;"
+              #fileInput>
+            <button *ngIf="isAdmin" mat-icon-button color="primary" (click)="fileInput.click()">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="no-data" *ngIf="!loading() && !error() && users().length === 0">
+        <mat-icon>people_outline</mat-icon>
+        <p>No users found</p>
+        <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="showCreateForm.set(true)">
+          Create Your First User
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

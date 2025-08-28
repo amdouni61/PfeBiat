@@ -1,0 +1,176 @@
+.user-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header-card {
+    margin-bottom: 20px;
+    
+    mat-card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .form-card {
+    margin-bottom: 20px;
+    
+    .form-row {
+      margin-bottom: 16px;
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .file-input-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .file-input-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      background-color: #fafafa;
+      
+      .file-input {
+        flex: 0 0 auto;
+      }
+      
+      .file-input-text {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+      }
+    }
+  }
+
+  .table-card {
+    .loading-container,
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+      
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+        color: #666;
+      }
+      
+      p {
+        margin: 16px 0;
+        color: #666;
+        font-size: 16px;
+      }
+    }
+
+    .users-table {
+      width: 100%;
+      
+      .mat-column-avatar {
+        width: 80px;
+        text-align: center;
+        
+        .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+      
+      .mat-column-username {
+        width: 150px;
+      }
+      
+      .mat-column-email {
+        width: 200px;
+      }
+      
+      .mat-column-fullName {
+        width: 180px;
+      }
+      
+      .mat-column-role {
+        width: 120px;
+        text-align: center;
+      }
+      
+      .mat-column-actions {
+        width: 200px;
+        text-align: center;
+        
+        button {
+          margin: 0 4px;
+        }
+      }
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+      
+      mat-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        margin-bottom: 20px;
+        color: #ccc;
+      }
+      
+      p {
+        margin: 20px 0;
+        color: #666;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .user-management-container {
+    padding: 10px;
+    
+    .header-card mat-card-content {
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+    }
+    
+    .form-card .form-actions {
+      flex-direction: column;
+    }
+    
+    .table-card .users-table {
+      .mat-column-email,
+      .mat-column-fullName {
+        display: none;
+      }
+      
+      .mat-column-actions {
+        width: 150px;
+      }
+    }
+  }
+}

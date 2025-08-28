@@ -1,0 +1,10 @@
+<app-material-navbar *ngIf="showSidebar()">
+  <router-outlet></router-outlet>
+</app-material-navbar>
+
+<div *ngIf="!showSidebar()" class="auth-container">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- Floating chat bubble visible on all authenticated pages -->
+<app-chat-bubble *ngIf="showSidebar()"></app-chat-bubble>

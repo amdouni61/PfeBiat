@@ -1,0 +1,61 @@
+<div class="team-detail-container">
+  <div class="loading-container" *ngIf="loading()">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading team details...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error()">
+    <mat-icon>error</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-raised-button color="primary" routerLink="/teams">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Teams
+    </button>
+  </div>
+
+  <mat-card *ngIf="team() && !loading()" class="team-detail-card">
+    <mat-card-header>
+      <mat-card-title>{{ team()?.name }}</mat-card-title>
+      <mat-card-subtitle>Team Details</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="team-info">
+        <div class="info-row">
+          <span class="label">ID:</span>
+          <span class="value">{{ team()?.id }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Name:</span>
+          <span class="value">{{ team()?.name }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Description:</span>
+          <span class="value description">{{ team()?.description }}</span>
+        </div>
+        
+        <div class="info-row" *ngIf="team()?.memberCount">
+          <span class="label">Members:</span>
+          <span class="value">{{ team()?.memberCount }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="editTeam()">
+        <mat-icon>edit</mat-icon>
+        Edit Team
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteTeam()">
+        <mat-icon>delete</mat-icon>
+        Delete Team
+      </button>
+      <button mat-button routerLink="/teams">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Teams
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,82 @@
+<div class="task-detail-container">
+  <div class="loading-container" *ngIf="loading()">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading task details...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error()">
+    <mat-icon>error</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-raised-button color="primary" routerLink="/tasks">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Tasks
+    </button>
+  </div>
+
+  <mat-card *ngIf="task() && !loading()" class="task-detail-card">
+    <mat-card-header>
+      <mat-card-title>{{ task()?.title }}</mat-card-title>
+      <mat-card-subtitle>Task Details</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="task-info">
+        <div class="info-row">
+          <span class="label">ID:</span>
+          <span class="value">{{ task()?.id }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Status:</span>
+          <span class="value">
+            <span class="status-badge">{{ task()?.status }}</span>
+          </span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Priority:</span>
+          <span class="value">
+            <span class="priority-badge">{{ task()?.priority }}</span>
+          </span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Type:</span>
+          <span class="value">
+            <span class="type-badge">{{ task()?.type }}</span>
+          </span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Date:</span>
+          <span class="value">{{ task()?.date | date:'mediumDate' }}</span>
+        </div>
+        
+        <div class="info-row" *ngIf="task()?.deadline">
+          <span class="label">Deadline:</span>
+          <span class="value">{{ task()?.deadline | date:'mediumDate' }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">Description:</span>
+          <span class="value description">{{ task()?.description }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="editTask()">
+        <mat-icon>edit</mat-icon>
+        Edit Task
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteTask()">
+        <mat-icon>delete</mat-icon>
+        Delete Task
+      </button>
+      <button mat-button routerLink="/tasks">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Tasks
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,0 +1,107 @@
+<div class="sidebar-container">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+                 [attr.role]="'navigation'"
+                 [mode]="'side'"
+                 [opened]="sidebarOpen()">
+      
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="logo-section">
+          <mat-icon class="logo-icon">task_alt</mat-icon>
+          <span class="logo-text" *ngIf="!sidebarCollapsed()">TaskFlow</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <mat-nav-list class="nav-list">
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span matListItemTitle *ngIf="!sidebarCollapsed()">Dashboard</span>
+        </a>
+
+        <a mat-list-item routerLink="/teams" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>group</mat-icon>
+          <span matListItemTitle *ngIf="!sidebarCollapsed()">Teams</span>
+        </a>
+
+        <a mat-list-item routerLink="/comments" routerLinkActive="active" class="nav-item">
+          <mat-icon matListItemIcon>comment</mat-icon>
+          <span matListItemTitle *ngIf="!sidebarCollapsed()">Comments</span>
+        </a>
+
+        <!-- Chat route removed; chat available via floating bubble -->
+
+        <!-- Admin Only Section -->
+        <div *ngIf="isAdmin()" class="admin-section">
+          <div class="section-divider" *ngIf="!sidebarCollapsed()">
+            <span class="section-title">Admin</span>
+          </div>
+          
+          <a mat-list-item routerLink="/admin/users" routerLinkActive="active" class="nav-item admin-item">
+            <mat-icon matListItemIcon>people</mat-icon>
+            <span matListItemTitle *ngIf="!sidebarCollapsed()">User Management</span>
+          </a>
+        </div>
+      </mat-nav-list>
+
+      <!-- User Profile Section -->
+      <div class="user-section" *ngIf="isAuthenticated()">
+        <mat-divider></mat-divider>
+        
+        <div class="user-info" *ngIf="!sidebarCollapsed()">
+          <div class="user-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
+          <div class="user-details">
+            <div class="user-name">{{ currentUser()?.fullName || 'User' }}</div>
+            <div class="user-role">{{ currentUser()?.role }}</div>
+          </div>
+        </div>
+
+        <mat-nav-list class="user-menu">
+          <a mat-list-item routerLink="/profile" class="nav-item">
+            <mat-icon matListItemIcon>person</mat-icon>
+            <span matListItemTitle *ngIf="!sidebarCollapsed()">Profile</span>
+          </a>
+
+          <a mat-list-item routerLink="/settings" class="nav-item">
+            <mat-icon matListItemIcon>settings</mat-icon>
+            <span matListItemTitle *ngIf="!sidebarCollapsed()">Settings</span>
+          </a>
+
+          <a mat-list-item (click)="logout()" class="nav-item logout-item">
+            <mat-icon matListItemIcon>logout</mat-icon>
+            <span matListItemTitle *ngIf="!sidebarCollapsed()">Logout</span>
+          </a>
+        </mat-nav-list>
+      </div>
+
+      <!-- Login Section -->
+      <div class="login-section" *ngIf="!isAuthenticated()">
+        <mat-divider></mat-divider>
+        
+        <div class="login-actions" *ngIf="!sidebarCollapsed()">
+          <a mat-button routerLink="/login" class="login-btn">
+            <mat-icon>login</mat-icon>
+            Login
+          </a>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <!-- Main Content Area -->
+    <mat-sidenav-content class="sidenav-content">
+      <!-- Toggle Button -->
+      <div class="content-header">
+        <button mat-icon-button class="sidebar-toggle" (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      
+      <div class="content-wrapper">
+        <ng-content></ng-content>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
